@@ -8,18 +8,18 @@ class ScriptSettings(object):
         '_cost',
         '_enabled',
         '_response',
+        '_subscriber',
+        '_groups',
     ]
 
     def __init__(self):
         self.subcommands = {}
         self.lifx_token = ''
-        self.group = ''
 
     def load(self, settings_file):
         with codecs.open(settings_file, encoding='utf-8-sig', mode='r') as f:
             settings = json.load(f, encoding='utf-8')
         self.lifx_token = settings['api_token']
-        self.group = settings['light_group']
 
         subcommands = {}
         for k, v in settings.items():

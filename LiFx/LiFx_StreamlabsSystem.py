@@ -43,7 +43,14 @@ def can_afford(user, subcommand):
 #       LiFx Commands
 # =================================
 def on():
-    endpoint = 'https://api.lifx.com/v1/lights/group:%s/state' % Config.group
+    _config = Config.subcommands['off']
+    groups = _config['groups'].split(',')
+    selectors = [
+        'group:{}'.format(group)
+        for group in groups
+    ]
+    selector_expression = ','.join(selectors)
+    endpoint = 'https://api.lifx.com/v1/lights/%s/state' % selector_expression
     headers = {
         'Authorization': 'Bearer %s' % Config.lifx_token,
     }
@@ -51,7 +58,7 @@ def on():
         'power': 'on'
     }
     Parent.PutRequest(endpoint, headers, payload)
-    Config.subcommands['off']['enabled'] = True
+    _config['enabled'] = True
 
 
 def off():
@@ -60,7 +67,13 @@ def off():
     if _config['response']:
         Parent.SendStreamMessage(_config['response'])
 
-    endpoint = 'https://api.lifx.com/v1/lights/group:%s/state' % Config.group
+    groups = _config['groups'].split(',')
+    selectors = [
+        'group:{}'.format(group)
+        for group in groups
+    ]
+    selector_expression = ','.join(selectors)
+    endpoint = 'https://api.lifx.com/v1/lights/%s/state' % selector_expression
     headers = {
         'Authorization': 'Bearer %s' % Config.lifx_token,
     }
@@ -93,6 +106,10 @@ def Execute(data):
 
     # Can the user afford it?
     if not can_afford(data.User, subcommand):
+        return
+
+    # Does the User have permission to use it
+    if subcommand_dict['subscriber'] and not Parent.HasPermission(data.User, 'subscriber', ''):
         return
 
     subcommand_func = globals()[subcommand]
