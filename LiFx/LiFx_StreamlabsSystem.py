@@ -5,6 +5,7 @@ Creator="MrMetaBytes"
 Version="0.0.1"
 
 import os
+import re
 import sys
 import time
 
@@ -16,6 +17,8 @@ Config = ScriptSettings()
 
 global callbacks
 callbacks = []
+
+COLOR_PATTERN = re.compile(r'^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$')
 
 # =================================
 #       Utility Methods
@@ -61,9 +64,10 @@ def on():
     _config['enabled'] = True
 
 
-def off():
+def off(data):
     global callbacks
     _config = Config.subcommands['off']
+    _config['enabled'] = False
     if _config['response']:
         Parent.SendStreamMessage(_config['response'])
 
@@ -81,8 +85,35 @@ def off():
         'power': 'off'
     }
     Parent.PutRequest(endpoint, headers, payload)
+    Parent.RemovePoints(data.User, data.UserName, _config['cost'])
     callbacks.append((time.time() + _config['duration'], on))
-    _config['enabled'] = False
+
+
+def color(data):
+    global callbacks
+    _config = Config.subcommands['color']
+
+    color_code = data.GetParam(2)
+    if not COLOR_PATTERN.match(color_code):
+        Parent.SendStreamMessage('Invalid color code')
+    elif _config['response']:
+        Parent.SendStreamMessage(_config['response'])
+
+    groups = _config['groups'].split(',')
+    selectors = [
+        'group:{}'.format(group)
+        for group in groups
+    ]
+    selector_expression = ','.join(selectors)
+    endpoint = 'https://api.lifx.com/v1/lights/%s/state' % selector_expression
+    headers = {
+        'Authorization': 'Bearer %s' % Config.lifx_token,
+    }
+    payload = {
+        'color': color_code
+    }
+    Parent.PutRequest(endpoint, headers, payload)
+    Parent.RemovePoints(data.User, data.UserName, _config['cost'])
 
 
 # =================================
@@ -113,8 +144,7 @@ def Execute(data):
         return
 
     subcommand_func = globals()[subcommand]
-    subcommand_func()
-    Parent.RemovePoints(data.User, data.UserName, subcommand_dict['cost'])
+    subcommand_func(data)
 
 
 def Tick():
