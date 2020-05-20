@@ -46,7 +46,7 @@ def on():
     _config = Config.subcommands['off']
     groups = _config['groups'].split(',')
     selectors = [
-        'group:{}'.format(group)
+        'group:{}'.format(group.strip())
         for group in groups
     ]
     selector_expression = ','.join(selectors)
