@@ -1,0 +1,45 @@
+{
+    "output_file": "settings.json",
+    "api_token": {
+        "type": "textbox",
+        "value": "",
+        "label": "LiFx API Token",
+        "tooltip": "Your personal API Token for your LiFx Account",
+        "group": "Configuration"
+    },
+    "light_group": {
+        "type": "textbox",
+        "value": "",
+        "label": "LiFx Group",
+        "tooltip": "The Lighting group to control",
+        "group": "Configuration"
+    },
+    "off_enabled": {
+        "type": "checkbox",
+        "value": false,
+        "label": "Enabled",
+        "tooltip": "Enable Users to turn your lights off",
+        "group": "!lights off"
+    },
+    "off_duration": {
+        "type": "numberbox",
+        "label": "Duration (seconds)",
+        "value": 10,
+        "tooltip": "How long the lights stay off in seconds",
+        "group": "!lights off"
+    },
+    "off_cost": {
+        "type": "numberbox",
+        "label": "Cost",
+        "value": 100,
+        "tooltip": "How much the command cost to use",
+        "group": "!lights off"
+    },
+    "off_response": {
+        "type": "textbox",
+        "label": "Response",
+        "value": "",
+        "tooltip": "The message to post in chat when the user triggers the command",
+        "group": "!lights off"
+    }
+}
