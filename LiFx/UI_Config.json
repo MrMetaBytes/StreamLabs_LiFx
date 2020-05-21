@@ -7,6 +7,34 @@
         "tooltip": "Your personal API Token for your LiFx Account",
         "group": "Configuration"
     },
+    "default_scene": {
+        "type": "textbox",
+        "label": "Default Scene Name",
+        "value": "",
+        "tooltip": "The name for the default scene to revert to if no commands are issued for a while",
+        "group": "Configuration"
+    },
+    "default_timeout": {
+        "type": "numberbox",
+        "label": "Default Timeout (seconds)",
+        "value": 600,
+        "tooltip": "How long to wait before returning to the default scene. Set to 0 to ignore.",
+        "group": "Configuration"
+    },
+    "global_cooldown": {
+        "type": "numberbox",
+        "label": "Global Cooldown (seconds)",
+        "value": 30,
+        "tooltip": "How long users have to wait between !lights commands",
+        "group": "Configuration"
+    },
+    "cooldown_message": {
+        "type": "textbox",
+        "label": "Cooldown Message",
+        "value": "The !lights commands are dimmed at the moment",
+        "tooltip": "The message posted in chat while on cooldown. Leave blank to ignore.",
+        "group": "Configuration"
+    },
     "off_enabled": {
         "type": "checkbox",
         "value": false,
@@ -90,5 +118,75 @@
         "label": "LiFx Groups",
         "tooltip": "The Lighting groups to affect ( comma separated )",
         "group": "!lights color"
+    },
+    "custom_1": {
+        "type": "textbox",
+        "value": "",
+        "label": "Label 1",
+        "tooltip": "The color the user types in chat ( leave blank to ignore )",
+        "group": "Colors"
+    },
+    "color_1": {
+        "type": "colorpicker",
+        "label": "Custom Color 1",
+        "value": "#ff0000",
+        "tooltip": "The color your lights get set when user use color 1",
+        "group": "Colors"
+    },
+    "custom_2": {
+        "type": "textbox",
+        "value": "",
+        "label": "Label 2",
+        "tooltip": "The color the user types in chat ( leave blank to ignore )",
+        "group": "Colors"
+    },
+    "color_2": {
+        "type": "colorpicker",
+        "label": "Custom Color 2",
+        "value": "#ff0000",
+        "tooltip": "The color your lights get set when user use color 2",
+        "group": "Colors"
+    },
+    "custom_3": {
+        "type": "textbox",
+        "value": "",
+        "label": "Label 3",
+        "tooltip": "The color the user types in chat ( leave blank to ignore )",
+        "group": "Colors"
+    },
+    "color_3": {
+        "type": "colorpicker",
+        "label": "Custom Color 3",
+        "value": "#ff0000",
+        "tooltip": "The color your lights get set when user use color 3",
+        "group": "Colors"
+    },
+    "custom_4": {
+        "type": "textbox",
+        "value": "",
+        "label": "Label 4",
+        "tooltip": "The color the user types in chat ( leave blank to ignore )",
+        "group": "Colors"
+    },
+    "color_4": {
+        "type": "colorpicker",
+        "label": "Custom Color 4",
+        "value": "#ff0000",
+        "tooltip": "The color your lights get set when user use color 4",
+        "group": "Colors"
+    },
+    "custom_5": {
+        "type": "textbox",
+        "value": "",
+        "label": "Label 5",
+        "tooltip": "The color the user types in chat ( leave blank to ignore )",
+        "group": "Colors"
+    },
+    "color_5": {
+        "type": "colorpicker",
+        "label": "Custom Color 5",
+        "value": "#ff0000",
+        "tooltip": "The color your lights get set when user use color 5",
+        "group": "Colors"
     }
 }
