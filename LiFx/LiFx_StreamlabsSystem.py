@@ -23,6 +23,12 @@ callbacks = []
 global ON_COOLDOWN
 ON_COOLDOWN = False
 
+global LAST_COMMAND_TIME
+LAST_COMMAND_TIME = time.time()
+
+global DEFAULTED
+DEFAULTED = True
+
 COLOR_PATTERN = re.compile(r'^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$')
 
 # =================================
@@ -41,9 +47,6 @@ def reset_cd():
     global callbacks
     global ON_COOLDOWN
     ON_COOLDOWN = False
-    if Config.default_timeout:
-        callbacks.append((time.time() + Config.default_timeout, activate_scene))
-
 
 
 #TODO: Work in Progress, I can't seem to get the UI button to trigger this?
@@ -192,6 +195,8 @@ def Init():
 def Execute(data):
     global callbacks
     global ON_COOLDOWN
+    global DEFAULTED
+    global LAST_COMMAND_TIME
     # Do we care about this message?
     if not (data.IsChatMessage() and data.GetParam(0).lower() == '!lights'):
         return
@@ -220,11 +225,19 @@ def Execute(data):
     subcommand_func = globals()[subcommand]
     if subcommand_func(data):
         ON_COOLDOWN = True
+        if Config.default_timeout:
+            LAST_COMMAND_TIME = time.time()
+            DEFAULTED = False
         callbacks.append((time.time() + Config.global_cooldown, reset_cd))
 
 
 def Tick():
     global callbacks
+    global DEFAULTED
+    global LAST_COMMAND_TIME
+    if not DEFAULTED and time.time() > LAST_COMMAND_TIME + Config.default_timeout:
+        activate_scene(Config.default_scene)
+        DEFAULTED = True
     new_callbacks = []
     for timeout, func in callbacks:
         if time.time() >= timeout:
