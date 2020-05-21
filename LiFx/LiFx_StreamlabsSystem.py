@@ -156,6 +156,7 @@ def color(data):
             color_code in Config.LIFX_COLORS,
             color_code in Config.custom_colors,
             COLOR_PATTERN.match(color_code),
+            'random' in color_code,
         ]):
             Parent.SendStreamMessage('Invalid color code')
             return False
@@ -163,6 +164,13 @@ def color(data):
         Parent.SendStreamMessage(_config['response'])
 
     color_code = Config.custom_colors.get(color_code, color_code)
+    if 'random' in color_code:
+        color_code = "#{:02x}{:02x}{:02x}".format(
+            Parent.GetRandom(0, 255),
+            Parent.GetRandom(0, 255),
+            Parent.GetRandom(0, 255),
+        )
+        Parent.SendStreamMessage('I picked {} as the random Color'.format(color_code))
     if 'rgba' in color_code:
         red, green, blue, __ = re.findall(r'\d+', color_code)
         color_code = "#{:02x}{:02x}{:02x}".format(int(red), int(green), int(blue))
